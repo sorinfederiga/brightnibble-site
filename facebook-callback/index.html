@@ -3,10 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bright Nibble Facebook Callback</title>
+  <title>Bright Nibble - Facebook Login</title>
 </head>
 <body>
-  <h1>Bright Nibble</h1>
-  <p>Facebook authentication callback endpoint.</p>
+  <p>Completing Facebook authentication...</p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const code = params.get("code");
+    const state = params.get("state");
+    const error = params.get("error");
+    const errorDescription = params.get("error_description");
+
+    if (code && state) {
+      const localUrl =
+        "http://127.0.0.1:8501/Social_Connections" +
+        "?code=" + encodeURIComponent(code) +
+        "&state=" + encodeURIComponent(state);
+
+      window.location.replace(localUrl);
+    } else if (error) {
+      document.body.innerHTML =
+        "<h2>Facebook login failed</h2>" +
+        "<p>" +
+        (errorDescription || error) +
+        "</p>";
+    } else {
+      document.body.innerHTML =
+        "<h2>Missing authentication data</h2>";
+    }
+  </script>
 </body>
 </html>
